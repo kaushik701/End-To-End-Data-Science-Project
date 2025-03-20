@@ -1,5 +1,6 @@
+"This file mainly handles the error and exception handling for the Project and logs them in the logging file"
 import sys
-
+from src.logger import logging
 #The return type would be sys
 def error_message_details(error, error_detail):
     _,_,exc_tb = error_detail.exc_info()
@@ -15,3 +16,10 @@ class CustomException(Exception):
 
     def __str__(self):
         return self.error_message
+
+if __name__=='__main__':
+    try:
+        a=1/0
+    except Exception as e:
+        logging.info("Zero Value Error")
+        raise CustomException(e,sys)

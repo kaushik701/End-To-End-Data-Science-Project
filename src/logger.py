@@ -11,3 +11,4 @@ logging.basicConfig(
     filename=LOGS_FILE_PATH,
     format="[%(asctime)s] %(lineno)d %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO)
+
