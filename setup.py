@@ -14,7 +14,7 @@ def get_requirements(file_path):
     return requirements
 
 setup(
-    name='src',
+    name='Data-Science-Project-Source',
     packages=find_packages(),
     version='0.1.0',
     description='End-To-End Data Science Project',
