@@ -9,6 +9,7 @@ from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
+from sklearn.model_selection import GridSearchCV
 
 from src.exception import CustomException
 from src.logger import logging
@@ -81,10 +82,24 @@ class ModelTrainer:
             ]
             best_model=models[best_model_name]
 
+            # Get the best parameters for the selected model
+            best_params = params[best_model_name]
+            
+            if len(best_params) > 0:
+                # If there are parameters to tune, use GridSearchCV to find the best ones
+                gs = GridSearchCV(best_model, best_params, cv=3)
+                gs.fit(X_train, y_train)
+                
+                # Update the model with best parameters and retrain
+                best_model.set_params(**gs.best_params_)
+            
+            # Final training of the best model
+            best_model.fit(X_train, y_train)
+
             if best_model_score<0.6:
                 raise CustomException("No best Model found")
             
-            logging.info("Best Found model on both training and testing  dataset")
+            logging.info(f"Best Found model: {best_model_name} with score: {best_model_score}")
             
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
